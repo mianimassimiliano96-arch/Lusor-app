@@ -1,0 +1,292 @@
+<HomeScreen>:
+    name: "home"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(15)
+
+        Label:
+            text: "Lusor"
+            font_size: dp(28)
+            bold: True
+            size_hint_y: 0.08
+
+        Label:
+            text: "L'ingegneria del relamping"
+            font_size: dp(14)
+            color: (0.4, 0.4, 0.4, 1)
+            size_hint_y: 0.05
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: dp(8)
+            size_hint_y: 0.25
+
+            Label:
+                text: "Dati Edificio"
+                font_size: dp(16)
+                bold: True
+                size_hint_y: 0.2
+
+            TextInput:
+                id: nome_input
+                hint_text: "Nome edificio"
+                multiline: False
+                size_hint_y: 0.25
+
+            TextInput:
+                id: indirizzo_input
+                hint_text: "Indirizzo"
+                multiline: False
+                size_hint_y: 0.25
+
+            TextInput:
+                id: data_input
+                hint_text: "Data rilievo (GG/MM/AAAA)"
+                multiline: False
+                size_hint_y: 0.25
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: dp(12)
+            size_hint_y: 0.5
+            padding: [0, dp(20), 0, 0]
+
+            Button:
+                text: "Gestione Stanze"
+                font_size: dp(16)
+                size_hint_y: 0.25
+                background_color: (0.18, 0.33, 0.59, 1)
+                on_press: root.salva_edificio()
+
+            Button:
+                text: "Esporta risultati"
+                font_size: dp(16)
+                size_hint_y: 0.25
+                background_color: (0.12, 0.56, 0.22, 1)
+                on_press: root.esporta_risultati()
+
+        Label:
+            text: "(c) 2026 LUSOR"
+            font_size: dp(11)
+            color: (0.6, 0.6, 0.6, 1)
+            size_hint_y: 0.05
+
+
+<RoomListScreen>:
+    name: "stanze"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(5)
+        padding: dp(10)
+
+        BoxLayout:
+            size_hint_y: 0.07
+            spacing: dp(10)
+
+            Button:
+                text: "< Indietro"
+                size_hint_x: 0.3
+                on_press: root.manager.current = "home"
+
+            Label:
+                text: "Stanze"
+                font_size: dp(20)
+                bold: True
+                size_hint_x: 0.4
+
+            Button:
+                text: "+ Nuova"
+                size_hint_x: 0.3
+                background_color: (0.18, 0.33, 0.59, 1)
+                on_press: root.nuova_stanza()
+
+        ScrollView:
+            GridLayout:
+                id: lista_stanze
+                cols: 1
+                spacing: dp(6)
+                padding: [0, dp(5), 0, dp(5)]
+                size_hint_y: None
+                height: self.minimum_height
+
+
+<RoomDetailScreen>:
+    name: "stanza_detail"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(5)
+        padding: dp(10)
+
+        BoxLayout:
+            size_hint_y: 0.07
+            spacing: dp(10)
+
+            Button:
+                text: "< Stanze"
+                size_hint_x: 0.3
+                on_press: root.manager.current = "stanze"
+
+            Label:
+                text: "Dettaglio Stanza"
+                font_size: dp(18)
+                bold: True
+                size_hint_x: 0.4
+
+            Button:
+                text: "Salva"
+                size_hint_x: 0.3
+                background_color: (0.12, 0.56, 0.22, 1)
+                on_press: root.salva_stanza()
+
+        ScrollView:
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(6)
+                size_hint_y: None
+                height: self.minimum_height
+                padding: [0, dp(5)]
+
+                Label:
+                    text: "Dati stanza"
+                    font_size: dp(14)
+                    bold: True
+                    size_hint_y: None
+                    height: dp(25)
+
+                GridLayout:
+                    cols: 2
+                    spacing: dp(5)
+                    size_hint_y: None
+                    height: dp(180)
+
+                    Label:
+                        text: "ID Locale:"
+                    TextInput:
+                        id: id_locale
+                        multiline: False
+
+                    Label:
+                        text: "Piano:"
+                    Spinner:
+                        id: piano
+                        values: ["Terra", "Primo", "Secondo", "Terzo", "Quarto", "Seminterrato", "Sottotetto", "Altro"]
+
+                    Label:
+                        text: "Altezza (m):"
+                    TextInput:
+                        id: altezza
+                        text: "3.0"
+                        multiline: False
+                        input_filter: "float"
+
+                    Label:
+                        text: "Destinazione:"
+                    Spinner:
+                        id: destinazione
+                        values: ["Ufficio", "Aula/Corsi", "Corridoio", "Magazzino", "Bagno", "Sala riunioni", "Reception", "Cucina", "Altro"]
+
+                    Label:
+                        text: "Controsoffitto:"
+                    Spinner:
+                        id: controsoffitto
+                        values: ["Cartongesso", "Grigliato metallico", "Lamellare", "Pannelli fonoassorbenti", "Doghe in legno", "PVC", "Nessuno / A vista", "Altro"]
+
+                Label:
+                    text: "Apparecchi illuminanti"
+                    font_size: dp(14)
+                    bold: True
+                    size_hint_y: None
+                    height: dp(25)
+
+                GridLayout:
+                    id: apparecchi_list
+                    cols: 1
+                    spacing: dp(3)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                Button:
+                    text: "+ Aggiungi apparecchio"
+                    size_hint_y: None
+                    height: dp(35)
+                    background_color: (0.3, 0.6, 0.3, 1)
+                    on_press: root.aggiungi_apparecchio()
+
+                Label:
+                    text: "Foto"
+                    font_size: dp(14)
+                    bold: True
+                    size_hint_y: None
+                    height: dp(25)
+
+                GridLayout:
+                    id: foto_list
+                    cols: 1
+                    spacing: dp(3)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                GridLayout:
+                    cols: 2
+                    spacing: dp(5)
+                    size_hint_y: None
+                    height: dp(40)
+
+                    Button:
+                        text: "Scatta foto"
+                        on_press: root.scatta_foto()
+
+                    Button:
+                        text: "Sfoglia..."
+                        on_press: root.aggiungi_foto()
+
+
+<ExportScreen>:
+    name: "export"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(15)
+
+        BoxLayout:
+            size_hint_y: 0.07
+            spacing: dp(10)
+
+            Button:
+                text: "< Home"
+                size_hint_x: 0.3
+                on_press: root.manager.current = "home"
+
+            Label:
+                text: "Esporta risultati"
+                font_size: dp(20)
+                bold: True
+                size_hint_x: 0.4
+
+        Label:
+            id: info_label
+            text: ""
+            font_size: dp(14)
+            size_hint_y: 0.2
+            halign: "center"
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: dp(20)
+            size_hint_y: 0.5
+            padding: [dp(20), dp(30)]
+
+            Button:
+                text: "Esporta Excel + Foto ZIP"
+                font_size: dp(16)
+                size_hint_y: 0.25
+                background_color: (0.12, 0.56, 0.22, 1)
+                on_press: root.esporta_excel()
+
+            Button:
+                text: "Salva progetto (.lsr)"
+                font_size: dp(16)
+                size_hint_y: 0.25
+                background_color: (0.18, 0.33, 0.59, 1)
+                on_press: root.esporta_lsr()
